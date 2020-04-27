@@ -132,7 +132,7 @@ def main():
             st.table(dados_inputado[dados_inputado['tipos'] != 'object']['NA %'])
             st.markdown('Download do csv com dados inputados')
             st.markdown(getDownloadLink(df_inputado), unsafe_allow_html=True)
-        elif(sidebarCategoria == 'Gráficos'):
+        elif(sidebarCategoria == 'Visualização dos dados'):
             histograma = st.checkbox('Histograma')
             if histograma:
                 col_num = st.selectbox('Selecione a Coluna Numerica: ', colunas_numericas,key = 'unique')
