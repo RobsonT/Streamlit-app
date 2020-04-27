@@ -57,10 +57,11 @@ def criaCorrelationplot(df, colunas_numericas):
 
 def main():
     st.title('AceleraDev Data Science')
+    opcoes = ('Informações básicas', 'Ánalise exploratoria', 'Inputação de dados', 'Visualização dos dados')
     st.sidebar.image('logo.png', width= 300)
     st.sidebar.title('Opções')
     sidebarCategoria = st.sidebar.radio(
-        '',('Informações básicas', 'Ánalise exploratoria', 'Inputação de dados', 'Visualização dos dados'))
+        '',opcoes)
     file  = st.file_uploader('Escolha a base de dados que deseja analisar (.csv)', type = 'csv')
     if file is not None:
         index = st.checkbox('Utilizar primeira coluna como index')
@@ -70,7 +71,7 @@ def main():
         colunas_object = list(aux[aux['tipos'] == 'object']['colunas'])
         colunas = list(df.columns)
         st.subheader(sidebarCategoria)
-        if(sidebarCategoria == 'Informações básicas'):
+        if(sidebarCategoria == opcoes[0]):
             st.markdown('Visualização do dataframe')
             numero_colunas = st.slider('Escolha o numero de colunas que deseja visualizar', min_value=1, max_value=50)
             st.dataframe(df.head(numero_colunas))
@@ -87,7 +88,7 @@ def main():
             st.markdown('Visualização das amostras(valores únicos):')
             atributo = st.selectbox('Escolha um atributo', df.columns)
             st.dataframe(pd.DataFrame({atributo: df[atributo].unique()}))
-        elif(sidebarCategoria == 'Ánalise exploratoria'):
+        elif(sidebarCategoria == opcoes[1]):
             st.markdown('Descrição do dataset:')
             st.table(df[colunas_numericas].describe().transpose())
             desenhaLinha()
@@ -115,7 +116,7 @@ def main():
             dados_faltante = pd.DataFrame({'atributos' : df.columns,'tipos': df.dtypes,
                              'NA %' : (df.isna().sum() / df.shape[0]) * 100})
             st.table(dados_faltante)
-        elif(sidebarCategoria == 'Inputação de dados'):
+        elif(sidebarCategoria == opcoes[2]):
             dados_faltante = pd.DataFrame({'atributos' : df.columns,'tipos': df.dtypes,
                              'NA %' : (df.isna().sum() / df.shape[0]) * 100})
             percentual = st.slider('Escolha o limite de percentual faltante para as colunas que você deseja inputar os dados', min_value=0, max_value=100)
@@ -132,7 +133,7 @@ def main():
             st.table(dados_inputado[dados_inputado['tipos'] != 'object']['NA %'])
             st.markdown('Download do csv com dados inputados')
             st.markdown(getDownloadLink(df_inputado), unsafe_allow_html=True)
-        elif(sidebarCategoria == 'Visualização dos dados'):
+        elif(sidebarCategoria == opcoes[3]):
             histograma = st.checkbox('Histograma')
             if histograma:
                 col_num = st.selectbox('Selecione a Coluna Numerica: ', colunas_numericas,key = 'unique')
